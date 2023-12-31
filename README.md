@@ -161,3 +161,51 @@ grpcurl -plaintext -d '{"id": 1}' localhost:50051 book.Catalogue.GetBook
   }
 }
 ```
+
+### GraphQL
+
+Apollo Server
+
+```
+npm install @apollo/server
+```
+
+GraphQL Schema を schema.js を定義する
+
+```
+export const typeDefs = `#graphql
+
+# "Book"型の定義
+type Book {
+  id: Int
+  title: String
+  author: String
+  price: Int
+}
+
+# クエリの定義
+type Query {
+  book(id: Int): Book
+  books: [Book]
+}
+`;
+
+```
+
+resolver.js は現状モック
+
+```
+export const resolvers = {
+  Query: {
+    book: async (parent, args, context) => {
+      const response = await context.dataSources.catalogueApi.getBook(args.id);
+      return response;
+    },
+    books: async (parent, args, context) => {
+      const response = await context.dataSources.catalogueApi.listBooks();
+      return response;
+    },
+  },
+};
+
+```

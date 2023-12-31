@@ -4,8 +4,11 @@ option go_package = "gihyo/catalogue/proto/book";
 
 package book;
 
+import "google/protobuf/empty.proto";
+
 service Catalogue {
   rpc GetBook (GetBookRequest) returns (GetBookResponse) {}
+  rpc ListBooks (google.protobuf.Empty) returns (ListBooksResponse) {}
 }
 
 message GetBookRequest {
@@ -14,6 +17,10 @@ message GetBookRequest {
 
 message GetBookResponse {
   Book book = 1;
+}
+
+message ListBooksResponse {
+  repeated Book books = 1;
 }
 
 message Book {
